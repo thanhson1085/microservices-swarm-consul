@@ -1,0 +1,15 @@
+upstream angular-admin-seed {
+    {{range service "angular-admin-seed"}}
+    server {{.NodeAddress}}:{{.Port}};{{end}}
+}
+
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server ipv6only=on;
+
+	server_name localhost;
+
+    location / {
+        proxy_pass http://angular-admin-seed/;
+    }
+}
