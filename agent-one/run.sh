@@ -42,6 +42,22 @@ apt-get update && \
 cp /build/agent-one/docker /etc/default/docker
 service docker restart
 
+echo Running Registrator...
+docker run -d \
+    --name=registrator \
+    --net=host \
+    --volume=/var/run/docker.sock:/tmp/docker.sock \
+    gliderlabs/registrator:latest \
+    consul://$NODE_IP:8500
+
+echo Running cAdvisor...
+docker run --volume=/:/rootfs:ro \
+    --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro \
+    --volume=/var/lib/docker/:/var/lib/docker:ro \
+    --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro \
+    --publish=8080:8080 \
+    --detach=true --name=cadvisor google/cadvisor:latest
+
 echo Installing Docker Swarm...
 docker pull swarm
 docker run -d swarm join --addr=$NODE_IP:2375 token://$TOKEN
@@ -58,18 +74,7 @@ while true; do
     fi;
 done
 
-echo Running Registrator...
+echo Running angular-admin-seed...
 docker run -d \
-    --name=registrator \
-    --net=host \
-    --volume=/var/run/docker.sock:/tmp/docker.sock \
-    gliderlabs/registrator:latest \
-    consul://$NODE_IP:8500
-
-echo Running cAdvisor...
-docker run --volume=/:/rootfs:ro \
-    --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro \
-    --volume=/var/lib/docker/:/var/lib/docker:ro \
-    --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro \
-    --publish=8080:8080 \
-    --detach=true --name=cadvisor google/cadvisor:latest
+    thanhson1085/angular-admin-seed:latest \
+    -p 80

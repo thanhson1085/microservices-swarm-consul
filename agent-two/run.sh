@@ -42,22 +42,6 @@ apt-get update && \
 cp /build/agent-two/docker /etc/default/docker
 service docker restart
 
-echo Installing Docker Swarm...
-docker pull swarm
-docker run -d swarm join --addr=$NODE_IP:2375 token://$TOKEN
-docker run -d -p 12375:2375 swarm manage token://$TOKEN
-
-export DOCKER_HOST=tcp://$NODE_IP:12375
-echo Docker Info...
-while true; do
-    if !(docker info | grep $NODE_IP); then 
-        echo Waiting for Swarm Manager working...
-        sleep 2;
-    else
-        break
-    fi;
-done
-
 echo Running Registrator...
 docker run -d \
     --name=registrator \
@@ -74,3 +58,19 @@ docker run --volume=/:/rootfs:ro \
     --publish=8080:8080 \
     --detach=true --name=cadvisor google/cadvisor:latest
 
+
+echo Installing Docker Swarm...
+docker pull swarm
+docker run -d swarm join --addr=$NODE_IP:2375 token://$TOKEN
+docker run -d -p 12375:2375 swarm manage token://$TOKEN
+
+export DOCKER_HOST=tcp://$NODE_IP:12375
+echo Docker Info...
+while true; do
+    if !(docker info | grep $NODE_IP); then 
+        echo Waiting for Swarm Manager working...
+        sleep 2;
+    else
+        break
+    fi;
+done
