@@ -28,8 +28,6 @@ cp init/consul-agent.conf /etc/init/
 start consul-agent
 consul join $CONSUL_MASTER
 
-wait
-
 echo Installing Docker ...
 apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" \
@@ -44,18 +42,22 @@ apt-get update && \
 cp /build/agent-one/docker /etc/default/docker
 service docker restart
 
-wait
-
 echo Installing Docker Swarm...
 docker pull swarm
 docker run -d swarm join --addr=$NODE_IP:2375 token://$TOKEN
 docker run -d -p 12375:2375 swarm manage token://$TOKEN
 
-wait
-
 export DOCKER_HOST=tcp://$NODE_IP:12375
+
 echo Docker Info...
-docker info
+while true; do
+    if !(docker info | grep $NODE_IP); then 
+        echo Waiting for Swarm Manager working...
+        sleep 2;
+    else
+        break
+    fi;
+done
 
 echo Running Registrator...
 docker run -d \
