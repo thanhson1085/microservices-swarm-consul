@@ -50,7 +50,7 @@ doker info
 
 echo Running Registrator...
 docker run -d \
-    --name=registrator \    
+    --name=registrator \
     --net=host \
     --volume=/var/run/docker.sock:/tmp/docker.sock \
     gliderlabs/registrator:latest \
