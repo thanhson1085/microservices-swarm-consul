@@ -48,7 +48,6 @@ docker run -d swarm join --addr=$NODE_IP:2375 token://$TOKEN
 docker run -d -p 12375:2375 swarm manage token://$TOKEN
 
 export DOCKER_HOST=tcp://$NODE_IP:12375
-
 echo Docker Info...
 while true; do
     if !(docker info | grep $NODE_IP); then 
