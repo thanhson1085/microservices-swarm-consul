@@ -42,7 +42,7 @@ docker pull swarm
 docker run -d swarm join --addr=$NODE_IP:2375 token://$TOKEN
 docker run -d -p 12375:2375 swarm manage token://$TOKEN
 
-cp /build/node-one/docker /etc/default/docker
+cp /build/agent-one/docker /etc/default/docker
 service docker restart
 
 export DOCKER_HOST=tcp://$NODE_IP:12375
