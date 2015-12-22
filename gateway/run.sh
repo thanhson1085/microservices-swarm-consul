@@ -1,9 +1,9 @@
 #!/bin/bash
-echo Installing dependencies...
-sudo apt-get update && \
-    apt-get install -y unzip curl wget nginx
-
 sudo su -
+
+echo Installing dependencies...
+apt-get update && \
+    apt-get install -y unzip curl wget nginx
 
 echo Fetching Consul...
 cd /tmp/

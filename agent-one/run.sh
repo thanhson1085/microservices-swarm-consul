@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NODE_IP=172.20.20.12
+NODE_IP=172.20.20.11
 TOKEN=acdb9dfa3ea6da0b0cfb2c819385fcd3
 
 sudo su -
@@ -22,7 +22,7 @@ chmod +x consul
 mv consul /usr/bin/consul
 mkdir /etc/consul.d
 chmod a+w /etc/consul.d
-cd /build/agent-two
+cd /build/agent-one
 cp init/consul-agent.conf /etc/init/
 start consul-agent
 
@@ -42,7 +42,7 @@ docker pull swarm
 docker run -d swarm join --addr=$NODE_IP:2375 token://$TOKEN
 docker run -d -p 12375:2375 swarm manage token://$TOKEN
 
-cp /build/node-two/docker /etc/default/docker
+cp /build/node-one/docker /etc/default/docker
 service docker restart
 
 export DOCKER_HOST=tcp://$NODE_IP:12375
@@ -63,4 +63,3 @@ docker run --volume=/:/rootfs:ro \
     --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro \
     --publish=8080:8080 \
     --detach=true --name=cadvisor google/cadvisor:latest
-
