@@ -75,6 +75,7 @@ while true; do
 done
 
 echo Running angular-admin-seed...
+docker pull thanhson1085/angular-admin-seed
 docker run -d \
-    thanhson1085/angular-admin-seed:latest \
+    thanhson1085/angular-admin-seed \
     -p 80
