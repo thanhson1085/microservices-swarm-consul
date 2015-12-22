@@ -2,6 +2,7 @@
 
 NODE_IP=172.20.20.12
 TOKEN=acdb9dfa3ea6da0b0cfb2c819385fcd3
+CONSUL_MASTER=172.20.20.10
 
 sudo su -
 
@@ -25,6 +26,7 @@ chmod a+w /etc/consul.d
 cd /build/agent-two
 cp init/consul-agent.conf /etc/init/
 start consul-agent
+consul join $CONSUL_MASTER
 
 echo Installing Docker ...
 apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
@@ -37,16 +39,16 @@ apt-get update && \
 apt-get update && \
     apt-get install -y docker-engine
 
+cp /build/agent-two/docker /etc/default/docker
+service docker restart
+
 echo Installing Docker Swarm...
 docker pull swarm
 docker run -d swarm join --addr=$NODE_IP:2375 token://$TOKEN
 docker run -d -p 12375:2375 swarm manage token://$TOKEN
 
-cp /build/agent-two/docker /etc/default/docker
-service docker restart
-
 export DOCKER_HOST=tcp://$NODE_IP:12375
-doker info
+docker info
 
 echo Running Registrator...
 docker run -d \
