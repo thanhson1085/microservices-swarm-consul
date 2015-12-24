@@ -4,6 +4,8 @@ sudo su -
 
 echo Fetching microservices-swarm-consul ...
 git clone https://github.com/thanhson1085/microservices-swarm-consul.git  /build
+cd /build/agent-two
+cp init/*.conf /etc/init/
 
 echo Installing dependencies...
 apt-get update && \
@@ -19,8 +21,6 @@ chmod +x consul
 mv consul /usr/bin/consul
 mkdir /etc/consul.d
 chmod a+w /etc/consul.d
-cd /build/agent-two
-cp init/consul-agent.conf /etc/init/
 start consul-agent
 
 echo Installing Docker ...
