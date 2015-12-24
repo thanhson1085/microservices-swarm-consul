@@ -1,9 +1,5 @@
 #!/bin/bash
 
-NODE_IP=172.20.20.12
-TOKEN=acdb9dfa3ea6da0b0cfb2c819385fcd3
-CONSUL_MASTER=172.20.20.10
-
 sudo su -
 
 echo Fetching microservices-swarm-consul ...
@@ -26,7 +22,6 @@ chmod a+w /etc/consul.d
 cd /build/agent-two
 cp init/consul-agent.conf /etc/init/
 start consul-agent
-consul join $CONSUL_MASTER
 
 echo Installing Docker ...
 apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
@@ -43,37 +38,15 @@ cp /build/agent-two/docker /etc/default/docker
 service docker restart
 
 echo Running Registrator...
-docker run -d \
-    --name=registrator \
-    --net=host \
-    --volume=/var/run/docker.sock:/tmp/docker.sock \
-    gliderlabs/registrator:latest \
-    consul://$NODE_IP:8500
+start docker-registrator
 
 echo Running cAdvisor...
-docker run --volume=/:/rootfs:ro \
-    --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro \
-    --volume=/var/lib/docker/:/var/lib/docker:ro \
-    --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro \
-    --publish=8080:8080 \
-    --detach=true --name=cadvisor google/cadvisor:latest
+start docker-cadvisor
 
 
 echo Installing Docker Swarm...
 docker pull swarm
-docker run -d swarm join --addr=$NODE_IP:2375 token://$TOKEN
-docker run -d -p 12375:2375 swarm manage token://$TOKEN
-
-export DOCKER_HOST=tcp://$NODE_IP:12375
-echo Docker Info...
-while true; do
-    if !(docker info | grep $NODE_IP); then 
-        echo Waiting for Swarm Manager working...
-        sleep 2;
-    else
-        break
-    fi;
-done
+start swarm-join
 
 echo Pulling angular-admin-seed...
 docker pull thanhson1085/angular-admin-seed
