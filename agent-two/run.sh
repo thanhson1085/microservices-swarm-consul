@@ -50,4 +50,5 @@ start swarm-join
 
 echo Pulling angular-admin-seed...
 docker pull thanhson1085/angular-admin-seed
+start docker-angular-admin-seed
 
