@@ -24,8 +24,6 @@ wget https://releases.hashicorp.com/consul/0.6.0/consul_0.6.0_web_ui.zip -O cons
 unzip consul_web_ui.zip
 
 echo Fetching Consul Template...
-mkdir consul-template
-cd consul-template
 cd /tmp/
 wget https://releases.hashicorp.com/consul-template/0.12.0/consul-template_0.12.0_linux_amd64.zip -O consul-template.zip
 
