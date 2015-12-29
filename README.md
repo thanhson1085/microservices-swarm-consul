@@ -2,6 +2,7 @@ A example for running your microservices. You just need to checkout this code an
 ```
 vagrant up
 ```
+I tested it on Windows 10 with Vagrant and VirtualBox
 
 ![Microservices with Docker Swarm and Consul](https://sonnguyen.ws/wp-content/uploads/2015/12/clotify_microservice.png)
 
