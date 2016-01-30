@@ -19,8 +19,7 @@ echo Installing Consul...
 unzip consul.zip
 chmod +x consul
 mv consul /usr/bin/consul
-mkdir /etc/consul.d
-chmod a+w /etc/consul.d
+cp -R /build/agent-one/consul.d /etc/
 start consul-agent
 
 echo Installing Docker ...
