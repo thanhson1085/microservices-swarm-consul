@@ -35,6 +35,8 @@ apt-get update && \
     apt-get install -y docker-engine
 
 cp /build/agent-two/docker /etc/default/docker
+# issues/18113
+rm -rf /var/lib/docker/network/files/local-kv.db
 service docker restart
 
 echo Installing Docker Compose
