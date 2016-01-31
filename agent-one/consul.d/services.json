@@ -1,9 +1,0 @@
-{
-    "services": [
-        {
-            "name": "mysql",
-            "tags": ["master"],
-            "address": "172.20.20.11"
-        }
-    ]
-}
