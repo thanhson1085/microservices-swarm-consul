@@ -51,7 +51,10 @@ docker pull swarm
 start swarm-join
 start swarm-manage
 
+echo Running Mysql...
+docker pull mysql:5.6
+start docker-mysql
+
 echo Running angular-admin-seed...
 docker pull thanhson1085/angular-admin-seed:mysql
-docker pull mysql:5.6
 start docker-angular-admin-seed
