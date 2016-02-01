@@ -12,4 +12,5 @@ Default access via SSH for all nodes user/pass: thanhson1085/password
 
 For unstanding about this source code, please read the series of post: [Microservices with Docker Swarm and Consul](https://sonnguyen.ws/microservices-with-docker-swarm-and-consul/)
 
+[![Demo Microservices](http://img.youtube.com/vi/Sg3OhUhGGL4/0.jpg)](http://www.youtube.com/watch?v=Sg3OhUhGGL4)
 
