@@ -6,7 +6,7 @@ upstream angular-admin-seed {
 server {
     listen 80 default_server;
     listen [::]:80 default_server ipv6only=on;
-    log_format upstreamlog '[$time_local] $remote_addr - $remote_user - $server_name  to: $upstream_addr: $request upstream_response_time $upstream_response_time msec $msec request_time $request_time';
+    log_format upstreamlog '[$time_local] $remote_addr - $remote_user - $server_name to: $upstream_addr $request $status upstream_response_time $upstream_response_time msec $msec request_time $request_time';
 
     server_name localhost;
 
