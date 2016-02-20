@@ -3,8 +3,8 @@ do_api_token: ~
 
 # DO SSH key settings
 do_ssh_name: ansible
-do_ssh_pub_key: "{{ lookup('file', '~/.ssh/id_dsa.pub') }}"
-do_ssh_private_key: "~/.ssh/id_dsa"
+do_ssh_pub_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+do_ssh_private_key: "~/.ssh/id_rsa"
 
 # DO droplet settings
 do_region: sgp1
@@ -20,4 +20,4 @@ swapfile_vfs_cache_pressure: 50
 # System user to create
 ssh_user: "{{ lookup('env', 'USER') }}"
 ssh_groups: "sudo"
-ssh_pub_key: "{{ lookup('file', '~/.ssh/id_dsa.pub') }}"
+ssh_pub_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
