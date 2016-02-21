@@ -2,7 +2,7 @@
 do_api_token: ~
 
 # DO Name & DNS
-do_name: Test Ansible
+do_name: Test-Ansible
 do_dns: ansible.test
 
 # DO SSH key settings

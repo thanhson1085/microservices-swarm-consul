@@ -1,6 +1,11 @@
-- hosts: localhost
+---
+- name: Provision an EC2 Instance
+  hosts: local
+  connection: local
   vars_files:
-    - vars.yml
+    - ../../vars.yml
+  vars:
+    - do_name: "gateway"
   tasks:
     - digital_ocean: >
         state=present
@@ -22,32 +27,18 @@
         wait_timeout=600
       register: do_droplet
 
-    - name: Register DNS
-      digital_ocean_domain: >
-        state=present
-        name="{{ do_dns }}"
-        ip="{{ do_droplet.droplet.ip_address }}"
-        api_token={{ do_api_token }}
-      when: do_dns|length > 0
-
     - debug: msg="ID is {{ do_droplet.droplet.id }}"
     - debug: msg="IP is {{ do_droplet.droplet.ip_address }}"
 
-    - name: Add new droplet to inventory
-      add_host: >
-        name="{{ do_name }}"
-        groups=dohosts
-        ansible_ssh_host="{{ do_droplet.droplet.ip_address }}"
-        ansible_ssh_user=root
-        ansible_ssh_private_key_file="{{ do_ssh_private_key }}"
-- hosts: dohosts
+    - name: Add the newly created instance(s) to the local host group
+      local_action: lineinfile 
+                    dest="./hosts" 
+                    regexp={{ do_droplet.droplet.ip_address }} 
+                    insertafter="[gateway]" line={{ do_droplet.droplet.ip_address }}
 
-  vars_files:
-    - main.yml
-    - vars.yml
-
+- name: Run Test Script
+  hosts: gateway
   tasks:
-    - include: tasks/init.yml
-
-  handlers:
-    - include: handlers/site.yml
+    - shell: echo 'test script' #should change to test script
+      args:
+          chdir: /root
