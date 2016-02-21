@@ -1,9 +1,6 @@
 - hosts: localhost
   vars_files:
     - vars.yml
-  vars_prompt:
-    do_name: "Name of server"
-    do_dns: "DNS name to bind"
   tasks:
     - digital_ocean: >
         state=present

@@ -1,6 +1,10 @@
 # DO API v2
 do_api_token: ~
 
+# DO Name & DNS
+do_name: Test Ansible
+do_dns: ansible.test
+
 # DO SSH key settings
 do_ssh_name: ansible
 do_ssh_pub_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
