@@ -13,7 +13,7 @@ apt-get update && \
 
 echo Fetching Consul...
 cd /tmp/
-wget https://releases.hashicorp.com/consul/0.6.0/consul_0.6.0_linux_amd64.zip -O consul.zip
+wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip -O consul.zip
 
 echo Installing Consul...
 unzip consul.zip
@@ -39,7 +39,7 @@ rm -rf /var/lib/docker/network/files/local-kv.db
 service docker restart
 
 echo Installing Docker Compose
-curl -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
 echo Running Registrator...
