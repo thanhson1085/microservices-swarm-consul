@@ -7,7 +7,7 @@ apt-get update && \
 
 echo Fetching Consul...
 cd /tmp/
-wget https://releases.hashicorp.com/consul/0.6.0/consul_0.6.0_linux_amd64.zip -O consul.zip
+wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip -O consul.zip
 
 echo Installing Consul...
 unzip consul.zip
@@ -20,12 +20,12 @@ echo Fetching Consul UI...
 cd /opt
 mkdir consul
 cd /opt/consul
-wget https://releases.hashicorp.com/consul/0.6.0/consul_0.6.0_web_ui.zip -O consul_web_ui.zip
+wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_web_ui.zip -O consul_web_ui.zip
 unzip consul_web_ui.zip
 
 echo Fetching Consul Template...
 cd /tmp/
-wget https://releases.hashicorp.com/consul-template/0.12.0/consul-template_0.12.0_linux_amd64.zip -O consul-template.zip
+wget https://releases.hashicorp.com/consul-template/0.14.0/consul-template_0.14.0_linux_amd64.zip -O consul-template.zip
 
 echo Installing Consul Template...
 unzip consul-template.zip
