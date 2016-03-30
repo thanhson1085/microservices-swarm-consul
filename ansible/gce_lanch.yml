@@ -1,0 +1,70 @@
+- name: Create instance(s)
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  vars:
+    service_account_email: your_service_account_email 
+    pem_file: path_to_pem_file
+    zone: us-central1-c
+    machine_type: n1-standard-1
+    project_id: project_id
+    image: angular-admin-seed
+
+  tasks:
+    - name: Launch instances
+      gce:
+          instance_names: nodes
+          machine_type: "{{ machine_type }}"
+          image: "{{ image }}"
+          zone: "{{ zone }}"
+          service_account_email: "{{ service_account_email }}"
+          pem_file: "{{ pem_file }}"
+          project_id: "{{ project_id }}"
+          tags: webserver
+      register: gce
+
+    - name: Wait for SSH to come up
+      wait_for: host={{ item.public_ip }} port=22 delay=10 timeout=60 
+      with_items: gce.instance_data
+
+    - name: Add host to groupname
+      add_host: hostname={{ item.public_ip }} groupname=new_instances private_ip={{ item.private_ip }}
+      with_items: gce.instance_data
+
+- name: Run provisions
+  hosts: new_instances
+  user: ubuntu
+  sudo: True
+  tasks:
+    - name: Transfer the Consul script
+      template: src=./init/consul.conf dest=/etc/init/consul.conf mode=0644
+    - name: Run Consul
+      command: start consul
+
+    - name: Remove Docker Key
+      command: rm /etc/docker/key.json
+
+    - name: Transfer the Docker script
+      template: src=./init/docker dest=/etc/default/docker mode=0644
+
+    - name: Restart Docker
+      command: service docker restart
+
+    - name: Transfer the Registrator script
+      template: src=./init/registrator.conf dest=/etc/init/registrator.conf mode=0644
+
+    - name: Run Registrator
+      command: start registrator
+
+    - name: Transfer the cAdvisor script
+      template: src=./init/cadvisor.conf dest=/etc/init/cadvisor.conf mode=0644
+
+    - name: Run cAdvisor
+      command: start cadvisor
+
+    - name: Transfer the Swarm script
+      template: src=./init/swarm-join.conf dest=/etc/init/swarm-join.conf mode=0644
+
+    - name: Run Swarm
+      command: start swarm-join
+

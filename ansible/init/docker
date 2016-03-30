@@ -1,0 +1,1 @@
+DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --dns {{ private_ip }} --dns 8.8.8.8 --dns-search=service.consul"
